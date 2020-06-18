@@ -6,6 +6,7 @@ export interface IOnePost {
 
 export interface IAllPosts {
     data: Array<IOnePost>;
+    getAllPosts?: () => void;
 }
 
 export interface IHeaderProps {

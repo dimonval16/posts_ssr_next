@@ -1,13 +1,16 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Head from 'next/head';
-import { GetServerSideProps } from 'next';
-import { GET_ALL_POSTS } from '../fetching_data/fetchingUrls';
-import axios, { AxiosResponse } from 'axios';
 import { IAllPosts } from '../interfaces/interfaces';
 import Header from '../components/Header';
 import AllPosts from '../components/AllPosts';
+import { connect } from 'react-redux';
+import { fetchAllPosts } from '../redux/actions/mainActions';
 
-const IndexPage: FC<IAllPosts> = ({ data }: IAllPosts) => {
+const IndexPage: FC<IAllPosts> = ({ data, getAllPosts }: IAllPosts) => {
+    useEffect(() => {
+        if (getAllPosts) getAllPosts();
+    }, []);
+
     return (
         <div>
             <Head>
@@ -32,14 +35,12 @@ const IndexPage: FC<IAllPosts> = ({ data }: IAllPosts) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-    const data = await axios.get(GET_ALL_POSTS).then((res: AxiosResponse) => res.data);
+const mapStateToProps = (state: any) => ({
+    data: state.allPosts.data,
+});
 
-    return {
-        props: {
-            data,
-        },
-    };
-};
+const mapDispatchToProps = (dispatch: any) => ({
+    getAllPosts: () => dispatch(fetchAllPosts()),
+});
 
-export default IndexPage;
+export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);

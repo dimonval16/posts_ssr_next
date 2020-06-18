@@ -1,8 +1,17 @@
-import React, { FunctionComponent } from 'react';
-import { AppProps } from 'next/app';
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from '../redux/store/store';
+import { createWrapper } from 'next-redux-wrapper';
 
-const MyApp: FunctionComponent<AppProps> = ({ Component, pageProps }: AppProps) => {
-    return <Component {...pageProps} />;
+const MyApp = ({ Component, pageProps }: any) => {
+    return (
+        <Provider store={store}>
+            <Component {...pageProps} />
+        </Provider>
+    );
 };
 
-export default MyApp;
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore);
+
+export default wrapper.withRedux(MyApp);
