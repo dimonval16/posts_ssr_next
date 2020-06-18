@@ -1,11 +1,33 @@
-import React, { FC } from 'react';
+import React, { FC, FormEvent } from 'react';
 import Head from 'next/head';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { useRouter } from 'next/router';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import MyButton from '../../components/MyButton';
+import { INewPostPage } from '../../interfaces/interfaces';
+import { changeTitleAC, changeDescriptionAC, addNewPostAC } from '../../redux/actions/mainActions';
 
-const NewPostPage: FC = () => {
+const NewPostPage: FC<INewPostPage> = ({
+    title,
+    description,
+    update,
+    onTitleChange,
+    onDescriptionChange,
+    onAddNewPost,
+}: INewPostPage) => {
+    const router = useRouter();
+
+    const handleFormSubmit = (e: FormEvent) => {
+        e.preventDefault();
+
+        if (title && description) {
+            onAddNewPost(title, description, update);
+            router.push('/');
+        }
+    };
+
     return (
         <div>
             <Head>
@@ -15,9 +37,9 @@ const NewPostPage: FC = () => {
                 <Header title={'Create Post'} link={'Go Back'} href={'/'} />
                 <ContentBlock>
                     <ContentTitle>Field this form for creating new post:</ContentTitle>
-                    <StyledForm>
-                        <Input title={'Title'} />
-                        <Input title={'Description'} />
+                    <StyledForm onSubmit={handleFormSubmit}>
+                        <Input title={'Title'} value={title} onInputChange={onTitleChange} />
+                        <Input title={'Description'} value={description} onInputChange={onDescriptionChange} />
                         <MyButton />
                     </StyledForm>
                 </ContentBlock>
@@ -53,4 +75,19 @@ const ContentBlock = styled.div`
     margin-right: 5%;
 `;
 
-export default NewPostPage;
+const mapStateToProps = (state: any) => ({
+    title: state.createPost.title,
+    description: state.createPost.description,
+    update: state.createPost.update,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+    onTitleChange: (value: string) => dispatch(changeTitleAC(value)),
+    onDescriptionChange: (value: string) => dispatch(changeDescriptionAC(value)),
+    onAddNewPost: (title: string, description: string, update: boolean) =>
+        dispatch(addNewPostAC(title, description, update)),
+});
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(NewPostPage);

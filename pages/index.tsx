@@ -4,12 +4,12 @@ import { IAllPosts } from '../interfaces/interfaces';
 import Header from '../components/Header';
 import AllPosts from '../components/AllPosts';
 import { connect } from 'react-redux';
-import { fetchAllPosts } from '../redux/actions/mainActions';
+import { fetchAllPosts, deletePostAC } from '../redux/actions/mainActions';
 
-const IndexPage: FC<IAllPosts> = ({ data, getAllPosts }: IAllPosts) => {
+const IndexPage: FC<IAllPosts> = ({ data, getAllPosts, update, onPostDelete, deleted }: IAllPosts) => {
     useEffect(() => {
         if (getAllPosts) getAllPosts();
-    }, []);
+    }, [update, deleted]);
 
     return (
         <div>
@@ -19,7 +19,7 @@ const IndexPage: FC<IAllPosts> = ({ data, getAllPosts }: IAllPosts) => {
 
             <main>
                 <Header title={'My Posts'} link={'New Post'} href={'/posts/new'} />
-                <AllPosts data={data} />
+                <AllPosts data={data} onPostDelete={onPostDelete} />
             </main>
             <style jsx global>{`
                 html,
@@ -37,10 +37,13 @@ const IndexPage: FC<IAllPosts> = ({ data, getAllPosts }: IAllPosts) => {
 
 const mapStateToProps = (state: any) => ({
     data: state.allPosts.data,
+    update: state.createPost.update,
+    deleted: state.allPosts.deleted,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
     getAllPosts: () => dispatch(fetchAllPosts()),
+    onPostDelete: (id: string | number) => dispatch(deletePostAC(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);

@@ -1,7 +1,13 @@
-import { GET_ALL_POSTS } from '../actions/mainActions';
+import { GET_ALL_POSTS, DELETE_POST } from '../actions/mainActions';
 
-const reducer = (state = {}, action: any) => {
+const reducer = (state: any = {}, action: any) => {
     switch (action.type) {
+        case DELETE_POST:
+            return {
+                ...state,
+                deleted: !state.deleted,
+            };
+
         case GET_ALL_POSTS:
             return {
                 ...state,

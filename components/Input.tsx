@@ -1,12 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 import { IInput } from '../interfaces/interfaces';
 import styled from 'styled-components';
 
-const Input: FC<IInput> = ({ title }: IInput) => {
+const Input: FC<IInput> = ({ title, value, onInputChange }: IInput) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value: string = e.target.value;
+
+        onInputChange(value);
+    };
+
     return (
         <StyledLabel>
             <StyledTitle>{title}</StyledTitle>
-            <StyledInput id={'title'} type={'text'} />
+            <StyledInput id={'title'} type={'text'} value={value} onChange={handleInputChange} />
         </StyledLabel>
     );
 };
