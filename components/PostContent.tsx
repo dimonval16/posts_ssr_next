@@ -9,7 +9,7 @@ const PostContent: FC<IPostPageData> = ({
     id,
     comments,
     onSetNewContent,
-    onAddNewComment
+    onAddNewComment,
 }: IPostPageData) => {
     const [isEdit, setIsEdit] = useState(false);
     const [newTitle, setNewTitle] = useState('');
@@ -58,11 +58,7 @@ const PostContent: FC<IPostPageData> = ({
                 </>
             )}
             <CommentsWrapper>
-                <CommentsBlock
-                    comments={comments}
-                    postId={id}
-                    onAddNewComment={onAddNewComment}
-                />
+                <CommentsBlock comments={comments} postId={id} onAddNewComment={onAddNewComment} />
             </CommentsWrapper>
         </PostWrapper>
     );

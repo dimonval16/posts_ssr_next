@@ -18,7 +18,7 @@ const StyledButton = styled.button`
     cursor: pointer;
     margin-top: 30px;
     @media (max-width: 700px) {
-        width: 95%;
+        width: 96%;
         height: 70px;
         font-size: 1.1rem;
     }

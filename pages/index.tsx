@@ -16,7 +16,6 @@ const IndexPage: FC<IAllPosts> = ({ data, getAllPosts, update, onPostDelete, del
             <Head>
                 <title>Posts Page</title>
             </Head>
-
             <main>
                 <Header title={'My Posts'} link={'New Post'} href={'/posts/new'} />
                 <AllPosts data={data} onPostDelete={onPostDelete} />

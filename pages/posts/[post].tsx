@@ -5,6 +5,7 @@ import { IPostPage } from '../../interfaces/interfaces';
 import { retrievePostAC, setNewPageContentAC, addNewCommentAC } from '../../redux/actions/mainActions';
 import Header from '../../components/Header';
 import PostContent from '../../components/PostContent';
+import Head from 'next/head';
 
 const Post: FC<IPostPage> = ({ getPostInfo, postPage, onSetNewContent, onAddNewComment }: IPostPage) => {
     const router = useRouter();
@@ -17,16 +18,21 @@ const Post: FC<IPostPage> = ({ getPostInfo, postPage, onSetNewContent, onAddNewC
 
     return (
         <div>
-            <Header title={'Post'} link={'Go Back'} href={'/'} />
-            <PostContent
-                title={postPage.title}
-                id={postPage.id}
-                body={postPage.body}
-                comments={postPage.comments}
-                isPageFull={postPage.isPageFull}
-                onSetNewContent={onSetNewContent}
-                onAddNewComment={onAddNewComment}
-            />
+            <Head>
+                <title>Post Page</title>
+            </Head>
+            <main>
+                <Header title={'Post'} link={'Go Back'} href={'/'} />
+                <PostContent
+                    title={postPage.title}
+                    id={postPage.id}
+                    body={postPage.body}
+                    comments={postPage.comments}
+                    isPageFull={postPage.isPageFull}
+                    onSetNewContent={onSetNewContent}
+                    onAddNewComment={onAddNewComment}
+                />
+            </main>
             <style jsx global>{`
                 html,
                 body {
